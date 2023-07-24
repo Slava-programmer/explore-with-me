@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainservice.dto.event.EventFullDto;
 import ru.practicum.mainservice.dto.event.EventNewDto;
 import ru.practicum.mainservice.dto.event.EventShortDto;
-import ru.practicum.mainservice.dto.event.UpdateEventUserRequest;
+import ru.practicum.mainservice.dto.event.EventUpdateUserRequest;
 import ru.practicum.mainservice.service.EventUserService;
 
 import javax.validation.Valid;
@@ -50,7 +50,7 @@ public class EventUserController {
     @PatchMapping("/{userId}/events/{eventId}")
     public EventFullDto updateEventByOwner(@PathVariable(name = "userId") @Positive Long userId,
                                            @PathVariable(name = "eventId") @Positive Long eventId,
-                                           @RequestBody UpdateEventUserRequest request) {
+                                           @RequestBody EventUpdateUserRequest request) {
         log.info("EventUserController: Request to update event  with id='{}' from user with id='{}', request={}",
                 eventId, userId, request);
         return eventService.updateEventByUserIdAndEventIdFromUser(userId, eventId, request);

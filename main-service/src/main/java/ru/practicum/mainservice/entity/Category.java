@@ -1,7 +1,6 @@
 package ru.practicum.mainservice.entity;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 

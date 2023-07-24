@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
 import ru.practicum.mainservice.dto.event.EventFullDto;
 import ru.practicum.mainservice.dto.event.EventNewDto;
 import ru.practicum.mainservice.dto.event.EventShortDto;
-import ru.practicum.mainservice.dto.event.UpdateEventUserRequest;
+import ru.practicum.mainservice.dto.event.EventUpdateUserRequest;
 import ru.practicum.mainservice.entity.Category;
 import ru.practicum.mainservice.entity.Event;
 import ru.practicum.mainservice.entity.User;
@@ -61,7 +61,7 @@ public class EventUserService {
         return EventMapper.toEventFullDto(event);
     }
 
-    public EventFullDto updateEventByUserIdAndEventIdFromUser(Long userId, Long eventId, UpdateEventUserRequest request) {
+    public EventFullDto updateEventByUserIdAndEventIdFromUser(Long userId, Long eventId, EventUpdateUserRequest request) {
         userService.checkExistUserById(userId);
 
         Event foundEvent = getEventByIdAndInitiatorIdIfExist(eventId, userId);

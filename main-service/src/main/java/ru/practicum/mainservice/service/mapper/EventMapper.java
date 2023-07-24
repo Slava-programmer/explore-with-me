@@ -92,6 +92,7 @@ public class EventMapper {
                 .views(event.getViews())
                 .build();
     }
+
     public List<EventShortDto> toEventShortDtoList(List<Event> events) {
         return events.stream()
                 .map(EventMapper::toEventShortDto)

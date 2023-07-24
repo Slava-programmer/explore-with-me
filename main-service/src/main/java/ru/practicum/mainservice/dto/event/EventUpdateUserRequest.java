@@ -1,8 +1,10 @@
 package ru.practicum.mainservice.dto.event;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import ru.practicum.mainservice.dto.location.LocationDto;
-import ru.practicum.mainservice.entity.Category;
 import ru.practicum.mainservice.model.EventStateAction;
 
 import java.time.LocalDateTime;
@@ -11,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @AllArgsConstructor
-public class UpdateEventUserRequest {
+public class EventUpdateUserRequest {
     private String annotation;
     private Long category;
     private String description;
