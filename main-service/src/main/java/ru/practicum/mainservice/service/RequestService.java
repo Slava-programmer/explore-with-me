@@ -18,6 +18,7 @@ import ru.practicum.mainservice.service.mapper.RequestMapper;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -40,7 +41,6 @@ public class RequestService {
             throw new EventConflictException(String.format("User with id='%s' is owner event by id='%s' and cannot create request",
                     userId, eventId));
         }
-
 
         Request request = Request.builder()
                 .created(LocalDateTime.now())
@@ -102,55 +102,55 @@ public class RequestService {
                 .orElseThrow(() -> new NoFoundObjectException(String.format(
                         "Event with id='%s' and initiator with id='%s' not found", eventId, userId)));
 
-        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
-            throw new EventConflictException("This event is not require confirmation of requests");
+
+        if (event.getConfirmedRequests() >= event.getParticipantLimit()) {
+            throw new EventConflictException("Достигнут лимит заявок на участие в событии");
         }
 
-        for (Long requestId : request.getRequestIds()) {
+        List<Request> confirmed = new ArrayList<>();
+        List<Request> rejected = new ArrayList<>();
 
-            Request foundRequest = requestRepository.findById(requestId)
-                    .orElseThrow(() -> new NoFoundObjectException(String.format(
-                            "Request with id='%s not found", requestId)));
-
-            if (!Objects.equals(request.getStatus(), RequestStatus.PENDING)) {
-                throw new EventConflictException("Request is not with status 'PENDING'");
+        List<Request> requests = requestRepository.findAllById(request.getRequestIds());
+        for (Request r : requests) {
+            if (r.getStatus() == RequestStatus.PENDING) {
+                if (event.getParticipantLimit() == 0) {
+                    r.setStatus(RequestStatus.CONFIRMED);
+                    event.setConfirmedRequests(event.getConfirmedRequests() + 1);
+                } else if (event.getParticipantLimit() > event.getConfirmedRequests()) {
+                    if (!event.getRequestModeration()) {
+                        r.setStatus(RequestStatus.CONFIRMED);
+                        event.setConfirmedRequests(event.getConfirmedRequests() + 1);
+                    } else {
+                        if (request.getStatus() == RequestStatus.CONFIRMED) {
+                            r.setStatus(RequestStatus.CONFIRMED);
+                            event.setConfirmedRequests(event.getConfirmedRequests() + 1);
+                        } else {
+                            r.setStatus(RequestStatus.REJECTED);
+                        }
+                    }
+                } else {
+                    r.setStatus(RequestStatus.REJECTED);
+                }
+            } else {
+                throw new EventConflictException("Статус можно изменить только у заявок в статусе WAITING");
             }
 
-            switch (request.getStatus()) {
-                case CONFIRMED:
-                    canceledRequests(event);
-                    request.setStatus(RequestStatus.CONFIRMED);
-                    requestRepository.save(foundRequest);
-                    updateEventRequest(foundRequest, 1);
-                    break;
-                case REJECTED:
-                    request.setStatus(RequestStatus.REJECTED);
-                    requestRepository.save(foundRequest);
-                    updateEventRequest(foundRequest, -1);
-                    break;
-                default:
-                    throw new IncorrectRequestException("Unknown status: " + request.getStatus());
+            if (r.getStatus().equals((RequestStatus.CONFIRMED))) {
+                confirmed.add(r);
+            } else {
+                rejected.add(r);
             }
         }
+        eventRepository.save(event);
 
-        Set<Long> ids = request.getRequestIds();
-
-        List<RequestDto> confirmedRequests = requestRepository
-                .findAllByIdInAndEventInitiatorIdAndEventIdAndStatus(ids, userId, eventId, RequestStatus.CONFIRMED)
-                .stream()
+        return new EventRequestStatusUpdateResponse(confirmed.stream()
                 .map(RequestMapper::toDto)
-                .collect(Collectors.toList());
-
-        List<RequestDto> rejectedRequests = requestRepository
-                .findAllByIdInAndEventInitiatorIdAndEventIdAndStatus(ids, userId, eventId, RequestStatus.REJECTED)
-                .stream()
-                .map(RequestMapper::toDto)
-                .collect(Collectors.toList());
-
-        return EventRequestStatusUpdateResponse.builder()
-                .confirmedRequests(confirmedRequests)
-                .rejectedRequests(rejectedRequests).build();
+                .collect(Collectors.toList()),
+                rejected.stream()
+                        .map(RequestMapper::toDto)
+                        .collect(Collectors.toList()));
     }
+
 
     public List<RequestDto> getAllParticipationRequestsByEventId(Long userId, Long eventId) {
         userService.checkExistUserById(userId);
