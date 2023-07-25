@@ -12,6 +12,6 @@ import java.util.List;
 public interface CompilationRepository extends JpaRepository<Compilation, Long> {
     Integer countById(Long compilationId);
 
-    @Query("select c from Compilation c where c.pinned=:pinned")
+    @Query("select c from Compilation as c where (:pinned is null or c.pinned = :pinned)")
     List<Compilation> findAllByPinned(Boolean pinned, Pageable pageable);
 }
