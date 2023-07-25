@@ -80,6 +80,10 @@ public class EventUserService {
         if (Objects.nonNull(request.getTitle())) {
             foundEvent.setTitle(request.getTitle());
         }
+        if (Objects.nonNull(request.getEventDate())) {
+            checkTimeBeforeEventStart(request.getEventDate());
+            foundEvent.setEventDate(request.getEventDate());
+        }
         if (Objects.nonNull(request.getAnnotation()) && StringUtils.hasLength(request.getAnnotation())) {
             foundEvent.setAnnotation(request.getAnnotation());
         }
@@ -115,8 +119,8 @@ public class EventUserService {
     }
 
     private void checkTimeBeforeEventStart(LocalDateTime startDate) {
-        LocalDateTime twoHoursLater = LocalDateTime.now().plusHours(HOURS_BEFORE_START_EVENT);
-        if (startDate.isBefore(twoHoursLater)) {
+        LocalDateTime munTimePeriod = LocalDateTime.now().plusHours(HOURS_BEFORE_START_EVENT);
+        if (startDate.isBefore(munTimePeriod)) {
             throw new IncorrectRequestException("The event will start in less than 2 hours. The start date of the event cannot be changed.");
         }
     }
