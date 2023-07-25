@@ -18,9 +18,9 @@ public class CompilationPublicController {
     private final CompilationService compilationService;
 
     @GetMapping
-    public List<CompilationDto> getCompilations(@RequestParam(name = "pinned", required = false) Boolean pinned,
-                                                @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
-                                                @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
+    public List<CompilationDto> getComplications(@RequestParam(required = false) Boolean pinned,
+                                                 @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                                 @RequestParam(defaultValue = "10") @Positive Integer size) {
         log.info("CompilationPublicController: Запрос на получение всех подборок");
         return compilationService.getAllCompilations(pinned, from, size);
     }
