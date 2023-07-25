@@ -11,6 +11,7 @@ import ru.practicum.mainservice.entity.User;
 import ru.practicum.mainservice.exception.EventConflictException;
 import ru.practicum.mainservice.exception.IncorrectRequestException;
 import ru.practicum.mainservice.exception.NoFoundObjectException;
+import ru.practicum.mainservice.model.EventState;
 import ru.practicum.mainservice.model.RequestStatus;
 import ru.practicum.mainservice.repository.EventRepository;
 import ru.practicum.mainservice.repository.RequestRepository;
@@ -39,6 +40,10 @@ public class RequestService {
         if (Objects.equals(userId, event.getInitiator().getId())) {
             throw new EventConflictException(String.format("User with id='%s' is owner event by id='%s' and cannot create request",
                     userId, eventId));
+        }
+
+        if (!Objects.equals(event.getState(), EventState.PUBLISHED)) {
+            throw new EventConflictException("Нельзя добавить запрос на участие в неопубликованном событии");
         }
 
         Request request = new Request(null, LocalDateTime.now(), event, user, RequestStatus.PENDING);
