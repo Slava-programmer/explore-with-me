@@ -53,6 +53,6 @@ public class CategoryService {
 
     public Category getCategoryByIdIfExist(Long categoryId) {
         return categoryRepository.findById(categoryId).orElseThrow(() ->
-                new NoFoundObjectException(String.format("Category with id='%s' not found", categoryId)));
+                new NoFoundObjectException(String.format("Категория с id='%s' не найдена", categoryId)));
     }
 }

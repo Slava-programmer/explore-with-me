@@ -33,7 +33,6 @@ public class EventUserService {
     private final EventRepository eventRepository;
     private final UserService userService;
     private final CategoryService categoryService;
-    private final RequestService requestService;
 
     @Transactional
     public EventFullDto createEvent(EventNewDto request, Long userId) {
@@ -68,13 +67,13 @@ public class EventUserService {
         Event foundEvent = getEventByIdAndInitiatorIdIfExist(eventId, userId);
 
         if (!Objects.equals(userId, foundEvent.getInitiator().getId())) {
-            throw new EventConflictException(String.format("User with id='%s' is not owner event by id='%s'",
+            throw new EventConflictException(String.format("Пользователь с id='%s' не автор события с id='%s'",
                     userId, eventId));
         }
 
         if (Objects.equals(EventState.PUBLISHED, foundEvent.getState())) {
-            throw new EventConflictException("State of event is 'PUBLISHED'. " +
-                    "Event state must be 'PENDING' or 'CANCELED'");
+            throw new EventConflictException("Статус события - 'PUBLISHED'. " +
+                    "Статус события должен быть 'PENDING' or 'CANCELED'");
         }
 
         if (Objects.nonNull(request.getTitle())) {
@@ -121,13 +120,14 @@ public class EventUserService {
     private void checkTimeBeforeEventStart(LocalDateTime startDate) {
         LocalDateTime munTimePeriod = LocalDateTime.now().plusHours(HOURS_BEFORE_START_EVENT);
         if (startDate.isBefore(munTimePeriod)) {
-            throw new IncorrectRequestException("The event will start in less than 2 hours. The start date of the event cannot be changed.");
+            throw new IncorrectRequestException("Событие начинается менее чем через " + HOURS_BEFORE_START_EVENT +
+                    " часов");
         }
     }
 
     public Event getEventByIdAndInitiatorIdIfExist(Long eventId, Long userId) {
         return eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() ->
-                new NoFoundObjectException(String.format("Event with id='%s' and initiator with id='%s' not found",
+                new NoFoundObjectException(String.format("Событие с id='%s' и инициатором с id='%s' не найдено",
                         eventId, userId)));
     }
 

@@ -43,12 +43,12 @@ public class UserService {
 
     public User getUserByIdIfExist(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NoFoundObjectException(String.format("User with id='%s' not found", userId)));
+                .orElseThrow(() -> new NoFoundObjectException(String.format("Пользователь с id='%s' не найден", userId)));
     }
 
     public void checkExistUserById(Long userId) {
         if (!userRepository.existsById(userId)) {
-            throw new NoFoundObjectException(String.format("User with id='%s' not found", userId));
+            throw new NoFoundObjectException(String.format("Пользователь с id='%s' не найден", userId));
         }
     }
 }

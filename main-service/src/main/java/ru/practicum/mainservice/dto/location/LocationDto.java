@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LocationDto {
-    @NotNull(message = "Annotation can not be null")
+    @NotNull(message = "Широта не может быть пустой или отсутствовать")
     private Float lat;
 
-    @NotNull(message = "Annotation can not be null")
+    @NotNull(message = "Долгота не может быть пустой или отсутствовать")
     private Float lon;
 }

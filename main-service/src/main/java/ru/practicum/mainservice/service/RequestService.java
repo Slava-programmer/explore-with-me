@@ -35,11 +35,11 @@ public class RequestService {
     public RequestDto createRequest(Long userId, Long eventId) {
         User user = userService.getUserByIdIfExist(userId);
         Event event = eventRepository.findById(eventId).orElseThrow(() ->
-                new NoFoundObjectException(String.format("Event with id='%s' not found", eventId)));
+                new NoFoundObjectException(String.format("Событие с id='%s' не найдено", eventId)));
 
         if (Objects.equals(userId, event.getInitiator().getId())) {
-            throw new EventConflictException(String.format("User with id='%s' is owner event by id='%s' and cannot create request",
-                    userId, eventId));
+            throw new EventConflictException(String.format("Пользователь с id='%s' - автор события с id='%s' " +
+                            "и не может создать запрос", userId, eventId));
         }
 
         if (!requestRepository.findByRequesterIdAndEventId(userId, eventId).isEmpty()) {
@@ -66,7 +66,7 @@ public class RequestService {
                 request.setStatus(RequestStatus.PENDING);
             }
         } else {
-            throw new EventConflictException(String.format("No free seats for sign ip on event with id='%s'", eventId));
+            throw new EventConflictException(String.format("Свободных мест для записи на события с id='%s' нет", eventId));
         }
 
         Request savedRequest = requestRepository.save(request);
@@ -85,12 +85,12 @@ public class RequestService {
         userService.checkExistUserById(userId);
 
         Request request = requestRepository.findByIdAndRequesterId(requestId, userId).orElseThrow(() ->
-                new NoFoundObjectException(String.format("Request with id='%s' and with requester id='%s' not found",
+                new NoFoundObjectException(String.format("Запрос с id='%s' и реквестором с id='%s' не найден",
                         requestId, userId)));
 
         if ((Objects.equals(request.getStatus(), RequestStatus.CANCELED))
                 || (Objects.equals(request.getStatus(), RequestStatus.REJECTED))) {
-            throw new IncorrectRequestException("Request already canceled");
+            throw new IncorrectRequestException("Запрос уже отменен");
         }
 
         request.setStatus(RequestStatus.CANCELED);
@@ -104,7 +104,7 @@ public class RequestService {
         userService.checkExistUserById(userId);
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() -> new NoFoundObjectException(String.format(
-                        "Event with id='%s' and initiator with id='%s' not found", eventId, userId)));
+                        "Запрос с id='%s' и инициатором с id='%s' не найден", eventId, userId)));
 
 
         if (event.getConfirmedRequests() >= event.getParticipantLimit()) {
@@ -155,39 +155,14 @@ public class RequestService {
                         .collect(Collectors.toList()));
     }
 
-
     public List<RequestDto> getAllParticipationRequestsByEventId(Long userId, Long eventId) {
         userService.checkExistUserById(userId);
 
         if (!eventRepository.existsByInitiatorIdAndId(userId, eventId)) {
-            throw new EventConflictException("User is not initiator of event");
+            throw new EventConflictException("Пользователь не инициатор события");
         }
 
         List<Request> requests = requestRepository.findAllByEventId(eventId);
         return RequestMapper.toDtoList(requests);
     }
-
-    private void updateEventRequest(Request request, int change) {
-        if (request.getStatus().equals(RequestStatus.CONFIRMED)) {
-            Event event = request.getEvent();
-            event.setConfirmedRequests(event.getConfirmedRequests() + change);
-
-            eventRepository.save(event);
-        }
-    }
-
-    private void canceledRequests(Event event) {
-        if (event.getParticipantLimit() != 0 && event.getParticipantLimit().equals(event.getConfirmedRequests())) {
-
-            List<Request> canceledRequests = requestRepository.findAllByEventIdAndStatus(event.getId(), RequestStatus.PENDING)
-                    .stream()
-                    .peek(request -> request.setStatus(RequestStatus.CANCELED))
-                    .collect(Collectors.toList());
-
-            requestRepository.saveAll(canceledRequests);
-
-            throw new EventConflictException("the limit on applications for this event has already been reached");
-        }
-    }
-
 }

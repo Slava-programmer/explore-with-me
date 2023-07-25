@@ -69,15 +69,15 @@ public class EventAdminService {
         Event foundEvent = getEventByIdIfExist(eventId);
 
         if (!Objects.equals(EventState.PENDING, foundEvent.getState())) {
-            throw new EventConflictException("Event state must be 'PENDING'");
+            throw new EventConflictException("Статус события должен быть'PENDING'");
         }
 
         if (Objects.nonNull(request.getAnnotation()) && StringUtils.hasLength(request.getAnnotation())) {
-            if (request.getAnnotation().length() < 20 || request.getAnnotation().length() > 2000) {
-                throw new IncorrectRequestException("incorrect length of the annotation parameter");
-            } else {
+//            if (request.getAnnotation().length() < 20 || request.getAnnotation().length() > 2000) {
+//                throw new IncorrectRequestException("Длина аннотации не может быть меньше 20 и больше 2000");
+//            } else {
                 foundEvent.setAnnotation(request.getAnnotation());
-            }
+//            }
         }
         if (Objects.nonNull(request.getTitle()) && StringUtils.hasLength(request.getTitle())) {
             foundEvent.setTitle(request.getTitle());
@@ -121,19 +121,19 @@ public class EventAdminService {
 
     private Event getEventByIdIfExist(Long eventId) {
         return eventRepository.findById(eventId).orElseThrow(() ->
-                new NoFoundObjectException(String.format("Event with id='%s' not found", eventId)));
+                new NoFoundObjectException(String.format("Событие с id='%s' не найдено", eventId)));
     }
 
     private void checksStartTimeAfterMinPeriod(LocalDateTime startDate) {
         LocalDateTime minStartDate = LocalDateTime.now().plusHours(HOURS_BEFORE_START_EVENT);
         if (startDate.isBefore(minStartDate)) {
-            throw new IncorrectRequestException("The event will start in less than 1 hours. The start date of the event cannot be changed.");
+            throw new IncorrectRequestException("До начала события менее " + HOURS_BEFORE_START_EVENT + " часов");
         }
     }
 
     private void checkEndIsAfterStart(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-            throw new IncorrectRequestException("Start date can not after end date");
+            throw new IncorrectRequestException("Дата начала не может быть позже даты конца");
         }
     }
 }

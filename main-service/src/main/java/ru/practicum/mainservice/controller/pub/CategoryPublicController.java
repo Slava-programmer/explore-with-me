@@ -20,13 +20,13 @@ public class CategoryPublicController {
     @GetMapping
     public List<CategoryDto> getCategories(@RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                            @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
-        log.info("CategoryPublicController: Request to get all categories");
+        log.info("CategoryPublicController: Запрос на получение всех категорий");
         return categoryService.getCategories(from, size);
     }
 
     @GetMapping("/{catId}")
     public CategoryDto getCategoryById(@PathVariable(name = "catId") @Positive Long categoryId) {
-        log.info("CategoryPublicController: Request to get category with id='{}'", categoryId);
+        log.info("CategoryPublicController: Запрос на получение категории с id='{}'", categoryId);
         return categoryService.getCategoryById(categoryId);
     }
 }

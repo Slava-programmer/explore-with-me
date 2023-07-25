@@ -34,7 +34,7 @@ public class EventPublicController {
                                          @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                          @RequestParam(name = "size", defaultValue = "10") @Positive Integer size,
                                          HttpServletRequest request) {
-        log.info("EventPublicController: Request to get all events with parameters: text={}, categories={}, paid={}, " +
+        log.info("EventPublicController: Запрос на получение всех событий с параметрами запроса: text={}, categories={}, paid={}, " +
                         "rangeStart={}, rangeEnd={}, onlyAvailable={}, sort={}, from={}, size={}, request={}",
                 text, categories, paid, startDate, endDate, onlyAvailable, sort, from, size, request.getRequestURI());
 
@@ -45,7 +45,7 @@ public class EventPublicController {
     @GetMapping("/{eventId}")
     public EventFullDto getEvent(@PathVariable(name = "eventId") @Positive Long eventId,
                                  HttpServletRequest request) {
-        log.info("EventPublicController: Request to get event with id='{}'", eventId);
+        log.info("EventPublicController: Запрос на получение события с id='{}'", eventId);
         return eventService.getEventById(eventId, request.getRemoteAddr(), request.getRequestURI());
     }
 }

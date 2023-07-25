@@ -17,7 +17,7 @@ public class CompilationUpdateRequest {
 
     private Boolean pinned;
 
-    @Size(min = 1, max = 50, message = "Title can not be empty and consist 1-50 characters")
+    @Size(min = 1, max = 50, message = "Длина названия должна быть больше 1 и меньше 50 символов")
     private String title;
 
 }

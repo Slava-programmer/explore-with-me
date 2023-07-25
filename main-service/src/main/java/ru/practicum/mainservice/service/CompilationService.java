@@ -80,12 +80,12 @@ public class CompilationService {
 
     private Compilation getCompilationByIdIfExist(Long compilationId) {
         return compilationRepository.findById(compilationId).orElseThrow(() ->
-                new NoFoundObjectException(String.format("Compilation with id='%s' not found", compilationId)));
+                new NoFoundObjectException(String.format("Подборка с with id='%s' не найдена", compilationId)));
     }
 
     private void checkExistCompilationById(Long compilationId) {
         if (compilationRepository.countById(compilationId) == 0) {
-            throw new NoFoundObjectException(String.format("Compilation with id='%s' not found", compilationId));
+            throw new NoFoundObjectException(String.format("Подборка с with id='%s' не найдена", compilationId));
         }
     }
 }

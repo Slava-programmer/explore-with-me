@@ -31,7 +31,7 @@ public class EventAdminController {
                                         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
                                         @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                         @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
-        log.info("EventAdminController: Request to get all events with parameters:" +
+        log.info("EventAdminController: Запрос на получение всех событий с параметрами: :" +
                         "users={}, states={}, categories={}, rangeStart={}, rangeEnd={}, from={}, size={}",
                 users, states, categories, startDate, endDate, from, size);
         return eventService.getAllEvents(users, states, categories, startDate, endDate, from, size);
@@ -40,7 +40,7 @@ public class EventAdminController {
     @PatchMapping("/{eventId}")
     public EventFullDto updateEvent(@PathVariable(name = "eventId") Long eventId,
                                     @RequestBody @Valid EventUpdateAdminRequest request) {
-        log.info("EventAdminController: Request to update event with id='{}', new parameters={}", eventId, request);
+        log.info("EventAdminController: Запрос на обновление события с id='{}', новые параметры={}", eventId, request);
         return eventService.updateEventById(eventId, request);
     }
 }

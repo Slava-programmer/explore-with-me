@@ -9,6 +9,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompilationNewDto {
@@ -16,7 +17,7 @@ public class CompilationNewDto {
 
     private Boolean pinned;
 
-    @Size(min = 1, max = 50, message = "Title can not be empty and consist 1-50 characters")
-    @NotBlank(message = "Title cannot be empty or null")
+    @Size(min = 1, max = 50, message = "Длина названия должна быть больше 1 и меньше 50 символов")
+    @NotBlank(message = "Название не может быть пустым или отсутствовать")
     private String title;
 }

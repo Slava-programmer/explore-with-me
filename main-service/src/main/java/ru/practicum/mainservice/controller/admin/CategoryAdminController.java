@@ -20,21 +20,21 @@ public class CategoryAdminController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto createCategory(@RequestBody @Valid CategoryDto request) {
-        log.info("CategoryAdminController: Request to create new category {}", request);
+        log.info("CategoryAdminController: Запрос на создание запроса на запись события {}", request);
         return categoryService.createCategory(request);
     }
 
     @DeleteMapping("/{catId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable(name = "catId") @Positive Long categoryId) {
-        log.info("CategoryAdminController: Request to delete category with id='{}'", categoryId);
+        log.info("CategoryAdminController: Запрос на удаление категории с id='{}'", categoryId);
         categoryService.deleteCategoryById(categoryId);
     }
 
     @PatchMapping("/{catId}")
     public CategoryDto updateCategory(@PathVariable(name = "catId") @Positive Long categoryId,
                                       @RequestBody @Valid CategoryDto request) {
-        log.info("CategoryAdminController: Request to update category with id='{}', new parameters={}", categoryId, request);
+        log.info("CategoryAdminController: Запрос на обновление категории с id='{}', новые параметры={}", categoryId, request);
         return categoryService.updateCategoryById(categoryId, request);
     }
 

@@ -22,22 +22,22 @@ public class UserAdminController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Valid UserDto request) {
-        log.info("UserAdminController: Request to create new user {}", request);
+        log.info("UserAdminController: Запрос на создание нового пользователя {}", request);
         return userService.createUser(request);
     }
 
     @GetMapping
     public List<UserDto> getUsers(@RequestParam(name = "ids", required = false) List<Long> ids,
-                                  @RequestParam(name = "from", defaultValue = "0", required = false) @PositiveOrZero Integer from,
-                                  @RequestParam(name = "size", defaultValue = "10", required = false) @Positive Integer size) {
-        log.info("UserAdminController: Request to get all users by ids");
+                                  @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
+                                  @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
+        log.info("UserAdminController: Запрос на получение всех пользователей по id={}", ids);
         return userService.getUsersByIds(ids, from, size);
     }
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable(name = "userId") Long userId) {
-        log.info("UserAdminController: Request to delete user with id='{}'", userId);
+        log.info("UserAdminController: Запрос на удаление пользователя с id='{}'", userId);
         userService.deleteUserById(userId);
     }
 }

@@ -21,13 +21,13 @@ public class CompilationPublicController {
     public List<CompilationDto> getCompilations(@RequestParam(name = "pinned", required = false) Boolean pinned,
                                                 @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
                                                 @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
-        log.info("CompilationPublicController: Request to get compilations");
+        log.info("CompilationPublicController: Запрос на получение всех подборок");
         return compilationService.getAllCompilations(pinned, from, size);
     }
 
     @GetMapping("/{compId}")
     public CompilationDto getCompilation(@PathVariable(name = "compId") @Positive Long compilationId) {
-        log.info("CompilationPublicController: Request to get compilation with id='{}'", compilationId);
+        log.info("CompilationPublicController: Запрос на получение подборки с id='{}'", compilationId);
         return compilationService.getCompilationById(compilationId);
     }
 }

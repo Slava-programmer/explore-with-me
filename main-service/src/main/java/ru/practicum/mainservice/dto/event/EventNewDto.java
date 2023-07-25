@@ -10,26 +10,27 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventNewDto {
-    @Size(min = 20, max = 2000, message = "Annotation must consist of 20 - 2000 characters")
-    @NotBlank(message = "Annotation can not be empty or null")
+    @Size(min = 20, max = 2000, message = "Краткое описание должна быть 20 - 2000 символов")
+    @NotBlank(message = "Краткое описание не может быть пустым или отсутствовать")
     private String annotation;
 
-    @NotNull(message = "Category cannot be null")
-    @Positive(message = "Category id must be positive")
+    @NotNull(message = "Категория не может быть null")
+    @Positive(message = "Id категории должно быть положительным числом")
     private Long category;
 
-    @Size(min = 20, max = 7000, message = "Description must consist of 20 - 2000 characters")
+    @Size(min = 20, max = 7000, message = "Длина описание должна быть 20 - 2000 символов")
     @NotBlank(message = "Description can not be empty or null")
     private String description;
 
-    @NotNull(message = "EventDate cannot be null")
+    @NotNull(message = "Дата события не может быть null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
-    @NotNull(message = "Location cannot be null")
+    @NotNull(message = "Локация не может быть null")
     private LocationDto location;
 
     private Boolean paid = false;
@@ -39,8 +40,8 @@ public class EventNewDto {
 
     private Boolean requestModeration = true;
 
-    @Size(min = 3, max = 120, message = "Title must consist of 20 - 2000 characters")
-    @NotBlank(message = "Title can not be empty or null")
+    @Size(min = 3, max = 120, message = "Длина названия должна быть 20 - 2000 символов")
+    @NotBlank(message = "Название не может быть пустым или отсутствовать")
     private String title;
 
 }
