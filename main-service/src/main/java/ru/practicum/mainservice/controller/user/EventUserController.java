@@ -50,7 +50,7 @@ public class EventUserController {
     @PatchMapping("/{userId}/events/{eventId}")
     public EventFullDto updateEventByOwner(@PathVariable(name = "userId") @Positive Long userId,
                                            @PathVariable(name = "eventId") @Positive Long eventId,
-                                           @RequestBody EventUpdateUserRequest request) {
+                                           @RequestBody @Valid EventUpdateUserRequest request) {
         log.info("EventUserController: Request to update event  with id='{}' from user with id='{}', request={}",
                 eventId, userId, request);
         return eventService.updateEventByUserIdAndEventId(userId, eventId, request);
