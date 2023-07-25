@@ -54,7 +54,7 @@ public class RequestService {
         if (limit == 0) {
             event.setConfirmedRequests(confirmed + 1);
             eventRepository.save(event);
-            request.setStatus(RequestStatus.CONFIRMED);
+            request.setStatus(RequestStatus.PENDING);
         } else if (confirmed < limit) {
             if (!event.getRequestModeration()) {
                 event.setConfirmedRequests(confirmed + 1);
