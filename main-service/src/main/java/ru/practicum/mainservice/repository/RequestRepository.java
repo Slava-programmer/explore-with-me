@@ -6,9 +6,7 @@ import ru.practicum.mainservice.entity.Request;
 import ru.practicum.mainservice.model.RequestStatus;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
@@ -18,8 +16,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Optional<Request> findByIdAndRequesterId(Long requestId, Long userId);
 
     List<Request> findAllByEventId(Long eventId);
-
-    List<Request> findAllByIdInAndEventInitiatorIdAndEventIdAndStatus(Set<Long> ids, Long userId, Long eventId, RequestStatus confirmed);
 
     List<Request> findAllByEventIdAndStatus(Long id, RequestStatus pending);
 

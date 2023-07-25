@@ -3,7 +3,6 @@ package ru.practicum.mainservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.mainservice.dto.compilation.CompilationDto;
 import ru.practicum.mainservice.dto.compilation.CompilationNewDto;
