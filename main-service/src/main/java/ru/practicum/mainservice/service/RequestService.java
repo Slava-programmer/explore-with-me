@@ -39,7 +39,7 @@ public class RequestService {
 
         if (Objects.equals(userId, event.getInitiator().getId())) {
             throw new EventConflictException(String.format("Пользователь с id='%s' - автор события с id='%s' " +
-                            "и не может создать запрос", userId, eventId));
+                    "и не может создать запрос", userId, eventId));
         }
 
         if (!requestRepository.findByRequesterIdAndEventId(userId, eventId).isEmpty()) {
@@ -115,34 +115,26 @@ public class RequestService {
         List<Request> rejected = new ArrayList<>();
 
         List<Request> requests = requestRepository.findAllById(request.getRequestIds());
-        for (Request r : requests) {
-            if (r.getStatus() == RequestStatus.PENDING) {
+        for (Request item : requests) {
+            if (Objects.equals(item.getStatus(), RequestStatus.PENDING)) {
                 if (event.getParticipantLimit() == 0) {
-                    r.setStatus(RequestStatus.CONFIRMED);
+                    item.setStatus(RequestStatus.CONFIRMED);
                     event.setConfirmedRequests(event.getConfirmedRequests() + 1);
+
                 } else if (event.getParticipantLimit() > event.getConfirmedRequests()) {
-                    if (!event.getRequestModeration()) {
-                        r.setStatus(RequestStatus.CONFIRMED);
+                    if (!event.getRequestModeration() ||
+                            (Objects.equals(request.getStatus(), RequestStatus.CONFIRMED))) {
+                        item.setStatus(RequestStatus.CONFIRMED);
                         event.setConfirmedRequests(event.getConfirmedRequests() + 1);
+                        confirmed.add(item);
                     } else {
-                        if (request.getStatus() == RequestStatus.CONFIRMED) {
-                            r.setStatus(RequestStatus.CONFIRMED);
-                            event.setConfirmedRequests(event.getConfirmedRequests() + 1);
-                        } else {
-                            r.setStatus(RequestStatus.REJECTED);
-                        }
+                        item.setStatus(RequestStatus.REJECTED);
+                        rejected.add(item);
                     }
                 } else {
-                    r.setStatus(RequestStatus.REJECTED);
+                    throw new EventConflictException("Статус можно изменить только у заявок в статусе WAITING");
                 }
-            } else {
-                throw new EventConflictException("Статус можно изменить только у заявок в статусе WAITING");
-            }
 
-            if (r.getStatus().equals((RequestStatus.CONFIRMED))) {
-                confirmed.add(r);
-            } else {
-                rejected.add(r);
             }
         }
         eventRepository.save(event);

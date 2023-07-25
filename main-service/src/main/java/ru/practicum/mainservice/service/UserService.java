@@ -11,6 +11,7 @@ import ru.practicum.mainservice.service.mapper.UserMapper;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class UserService {
     }
 
     public List<UserDto> getUsersByIds(List<Long> ids, Integer from, Integer size) {
-        if (ids == null || ids.isEmpty()) {
+        if (Objects.isNull(ids) || ids.isEmpty()) {
             List<User> users = userRepository.findAll(PageRequest.of(from, size)).getContent();
             return UserMapper.toUserDtosList(users);
         }
