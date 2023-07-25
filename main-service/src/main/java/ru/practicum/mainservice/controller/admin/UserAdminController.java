@@ -28,8 +28,8 @@ public class UserAdminController {
 
     @GetMapping
     public List<UserDto> getUsers(@RequestParam(name = "ids", required = false) List<Long> ids,
-                                  @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
-                                  @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
+                                  @RequestParam(name = "from", defaultValue = "0", required = false) @PositiveOrZero Integer from,
+                                  @RequestParam(name = "size", defaultValue = "10", required = false) @Positive Integer size) {
         log.info("UserAdminController: Request to get all users by ids");
         return userService.getUsersByIds(ids, from, size);
     }
