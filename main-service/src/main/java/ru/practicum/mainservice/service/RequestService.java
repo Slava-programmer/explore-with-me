@@ -41,11 +41,7 @@ public class RequestService {
                     userId, eventId));
         }
 
-        Request request = Request.builder()
-                .created(LocalDateTime.now())
-                .event(event)
-                .requester(user)
-                .build();
+        Request request = new Request(null, LocalDateTime.now(), event, user, RequestStatus.PENDING);
 
         int confirmed = event.getConfirmedRequests();
         int limit = event.getParticipantLimit();
