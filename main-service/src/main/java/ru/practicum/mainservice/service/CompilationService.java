@@ -68,9 +68,9 @@ public class CompilationService {
     }
 
     public List<CompilationDto> getAllCompilations(Boolean pinned, Integer from, Integer size) {
-        Pageable pageable = PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id"));
+        Pageable pageable = PageRequest.of(from / size, size);
 
-        List<Compilation> compilations = compilationRepository.findAllByPinnedIs(pinned, pageable);
+        List<Compilation> compilations = compilationRepository.findAllByPinned(pinned, pageable);
         return CompilationMapper.toCompilationDtoList(compilations);
     }
 

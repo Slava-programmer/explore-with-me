@@ -42,6 +42,10 @@ public class RequestService {
                     userId, eventId));
         }
 
+        if (!requestRepository.findByRequesterIdAndEventId(userId, eventId).isEmpty()) {
+            throw new EventConflictException("Нельзя добавить повторный запрос на участие в событии");
+        }
+
         if (!Objects.equals(event.getState(), EventState.PUBLISHED)) {
             throw new EventConflictException("Нельзя добавить запрос на участие в неопубликованном событии");
         }
