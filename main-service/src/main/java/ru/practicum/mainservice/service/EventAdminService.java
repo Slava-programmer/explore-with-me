@@ -90,7 +90,7 @@ public class EventAdminService {
             foundEvent.setDescription(request.getDescription());
         }
         if (Objects.nonNull(request.getEventDate())) {
-            checkEndTimeAfterStartTime(request.getEventDate());
+            checksStartTimeAfterMinPeriod(request.getEventDate());
             foundEvent.setEventDate(request.getEventDate());
         }
         if (Objects.nonNull(request.getLocation())) {
@@ -124,9 +124,9 @@ public class EventAdminService {
                 new NoFoundObjectException(String.format("Event with id='%s' not found", eventId)));
     }
 
-    private void checkEndTimeAfterStartTime(LocalDateTime startDate) {
-        LocalDateTime twoHoursLater = LocalDateTime.now().plusHours(HOURS_BEFORE_START_EVENT);
-        if (startDate.isBefore(twoHoursLater)) {
+    private void checksStartTimeAfterMinPeriod(LocalDateTime startDate) {
+        LocalDateTime minStartDate = LocalDateTime.now().plusHours(HOURS_BEFORE_START_EVENT);
+        if (startDate.isBefore(minStartDate)) {
             throw new IncorrectRequestException("The event will start in less than 1 hours. The start date of the event cannot be changed.");
         }
     }
