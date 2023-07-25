@@ -8,6 +8,7 @@ import ru.practicum.mainservice.dto.event.EventFullDto;
 import ru.practicum.mainservice.dto.event.EventUpdateAdminRequest;
 import ru.practicum.mainservice.service.EventAdminService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
@@ -33,13 +34,13 @@ public class EventAdminController {
         log.info("EventAdminController: Request to get all events with parameters:" +
                         "users={}, states={}, categories={}, rangeStart={}, rangeEnd={}, from={}, size={}",
                 users, states, categories, startDate, endDate, from, size);
-        return eventService.getAllEventsFromAdmin(users, states, categories, startDate, endDate, from, size);
+        return eventService.getAllEvents(users, states, categories, startDate, endDate, from, size);
     }
 
     @PatchMapping("/{eventId}")
     public EventFullDto updateEvent(@PathVariable(name = "eventId") @Positive Long eventId,
-                                    @RequestBody EventUpdateAdminRequest request) {
+                                    @RequestBody @Valid EventUpdateAdminRequest request) {
         log.info("EventAdminController: Request to update event with id='{}', new parameters={}", eventId, request);
-        return eventService.updateEventByIdFromAdmin(eventId, request);
+        return eventService.updateEventById(eventId, request);
     }
 }

@@ -1,21 +1,22 @@
 package ru.practicum.mainservice.dto.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import ru.practicum.mainservice.dto.location.LocationDto;
 import ru.practicum.mainservice.model.EventStateAction;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Getter
 @Setter
+@Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class EventUpdateAdminRequest {
+    @Size(min = 20, max = 2000)
     private String annotation;
     private Long category;
+    @Size(min = 20, max = 7000)
     private String description;
     private LocalDateTime eventDate;
     private LocationDto location;
@@ -23,5 +24,6 @@ public class EventUpdateAdminRequest {
     private Integer participantLimit;
     private Boolean requestModeration;
     private EventStateAction stateAction;
+    @Size(min = 3, max = 120)
     private String title;
 }

@@ -1,7 +1,7 @@
 package ru.practicum.mainservice.service.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.mainservice.dto.request.ParticipationRequestDto;
+import ru.practicum.mainservice.dto.request.RequestDto;
 import ru.practicum.mainservice.entity.Request;
 
 import java.util.List;
@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class RequestMapper {
-    public  ParticipationRequestDto toDto(Request request) {
-        return ParticipationRequestDto.builder()
+    public RequestDto toDto(Request request) {
+        return RequestDto.builder()
                 .id(request.getId())
                 .event(request.getEvent().getId())
                 .created(request.getCreated())
@@ -19,7 +19,7 @@ public class RequestMapper {
                 .build();
     }
 
-    public  Request toObject(ParticipationRequestDto dto) {
+    public  Request toObject(RequestDto dto) {
         return Request.builder()
                 .id(dto.getId())
                 .event(null)
@@ -29,7 +29,7 @@ public class RequestMapper {
                 .build();
     }
 
-    public  List<ParticipationRequestDto> toDtoList(List<Request> requests) {
+    public  List<RequestDto> toDtoList(List<Request> requests) {
         return requests.stream()
                 .map(RequestMapper::toDto)
                 .collect(Collectors.toList());

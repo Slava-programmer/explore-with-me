@@ -4,8 +4,8 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
 @Setter
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,18 +1,16 @@
 package ru.practicum.mainservice.dto.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import ru.practicum.mainservice.dto.location.LocationDto;
 import ru.practicum.mainservice.model.EventStateAction;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Setter
+@Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class EventUpdateUserRequest {
     private String annotation;
     private Long category;

@@ -15,7 +15,8 @@ public class UserDto {
     private Long id;
 
     @NotBlank(message = "Email cannot empty or null")
-    @Email(regexp = "[\\w._]{1,10}@[\\w]{2,}.[\\w]{2,}", message = "Email is not format as email (email@email.com)")
+    @Email(message = "Email is not format as email (email@email.com)")
+    @Size(min = 6, max = 254)
     private String email;
 
     @Size(min = 2, max = 250, message = "The name must consist of at least 2 characters and no more than 250 characters")

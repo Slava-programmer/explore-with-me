@@ -6,16 +6,13 @@ import ru.practicum.mainservice.model.RequestStatus;
 
 import java.time.LocalDateTime;
 
-/**
- * Заявка на участие в событии
- */
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParticipationRequestDto {
+public class RequestDto {
     private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

@@ -1,15 +1,15 @@
 package ru.practicum.mainservice.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 @Setter
+@Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class ErrorResponse {
     private String message;
 

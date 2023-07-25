@@ -7,12 +7,8 @@ import ru.practicum.mainservice.dto.location.LocationDto;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
-/**
- * Запрос на создание нового события
- */
-
-@Getter
 @Setter
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,6 +25,7 @@ public class EventNewDto {
     @NotBlank(message = "Description can not be empty or null")
     private String description;
 
+    @NotNull(message = "EventDate cannot be null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 

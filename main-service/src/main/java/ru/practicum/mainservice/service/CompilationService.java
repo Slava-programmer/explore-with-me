@@ -27,7 +27,7 @@ public class CompilationService {
     @Transactional
     public CompilationDto createCompilation(CompilationNewDto request) {
         Compilation compilation = CompilationMapper.toCompilation(request);
-        if (Objects.nonNull(request.getPinned())) {
+        if (!Objects.nonNull(request.getPinned())) {
             compilation.setPinned(false);
         }
 

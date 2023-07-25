@@ -31,10 +31,10 @@ public class EventPublicService {
     private final EventRepository eventRepository;
     private final StatClient statClient;
 
-    public List<EventShortDto> getAllEventsFromPublic(String text, List<Long> categories, Boolean paid,
-                                                      LocalDateTime startDate, LocalDateTime endDate,
-                                                      Boolean onlyAvailable, String sort,
-                                                      Integer from, Integer size, String ip, String uri) {
+    public List<EventShortDto> getAllEvents(String text, List<Long> categories, Boolean paid,
+                                            LocalDateTime startDate, LocalDateTime endDate,
+                                            Boolean onlyAvailable, String sort,
+                                            Integer from, Integer size, String ip, String uri) {
         checkEndIsAfterStart(startDate, endDate);
         saveInfoToStatistics(ip, uri);
 
@@ -71,7 +71,7 @@ public class EventPublicService {
         }
 
         specification = specification.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("eventStatus"), EventState.PUBLISHED));
+                criteriaBuilder.equal(root.get("state"), EventState.PUBLISHED));
 
         List<Event> events = eventRepository.findAll(specification, pageable);
         updateViewsOfEvents(events);
@@ -80,7 +80,8 @@ public class EventPublicService {
     }
 
     public EventFullDto getEventById(Long eventId, String ip, String uri) {
-        Event event = getEventByIdIfExist(eventId);
+        Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
+                .orElseThrow(() -> new NoFoundObjectException("Event not found"));
 
         saveInfoToStatistics(ip, uri);
         updateViewsOfEvents(List.of(event));
@@ -88,10 +89,7 @@ public class EventPublicService {
         return EventMapper.toEventFullDto(event);
     }
 
-    public Event getEventByIdIfExist(Long eventId) {
-        return eventRepository.findById(eventId).orElseThrow(() ->
-                new NoFoundObjectException(String.format("Event with id='%s' not found", eventId)));
-    }
+
 
     public List<Event> getAllEventsByIdIn(Set<Long> events) {
         return eventRepository.findAllByIdIn(events);

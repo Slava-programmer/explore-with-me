@@ -38,7 +38,7 @@ public class EventPublicController {
                         "rangeStart={}, rangeEnd={}, onlyAvailable={}, sort={}, from={}, size={}, request={}",
                 text, categories, paid, startDate, endDate, onlyAvailable, sort, from, size, request.getRequestURI());
 
-        return eventService.getAllEventsFromPublic(text, categories, paid, startDate, endDate, onlyAvailable, sort,
+        return eventService.getAllEvents(text, categories, paid, startDate, endDate, onlyAvailable, sort,
                 from, size, request.getRemoteAddr(), request.getRequestURI());
     }
 

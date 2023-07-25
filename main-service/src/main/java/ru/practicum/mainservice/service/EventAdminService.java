@@ -26,13 +26,13 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class EventAdminService {
-    private static final Integer HOURS_BEFORE_START_EVENT = 2;
+    private static final Integer HOURS_BEFORE_START_EVENT = 1;
     private final EventRepository eventRepository;
     private final CategoryService categoryService;
 
-    public List<EventFullDto> getAllEventsFromAdmin(List<Long> users, List<String> states,
-                                                    List<Long> categories, LocalDateTime startDate, LocalDateTime endDate,
-                                                    Integer from, Integer size) {
+    public List<EventFullDto> getAllEvents(List<Long> users, List<String> states,
+                                           List<Long> categories, LocalDateTime startDate, LocalDateTime endDate,
+                                           Integer from, Integer size) {
         checkEndIsAfterStart(startDate, endDate);
 
         Pageable pageable = PageRequest.of(from / size, size, Sort.by(Sort.Direction.ASC, "id"));
@@ -45,7 +45,7 @@ public class EventAdminService {
         }
         if (Objects.nonNull(states) && !states.isEmpty()) {
             specification = specification.and((root, query, criteriaBuilder) ->
-                    root.get("eventStatus").as(String.class).in(states));
+                    root.get("state").as(String.class).in(states));
         }
         if (Objects.nonNull(categories) && !categories.isEmpty()) {
             specification = specification.and((root, query, criteriaBuilder) ->
@@ -65,11 +65,11 @@ public class EventAdminService {
     }
 
     @Transactional
-    public EventFullDto updateEventByIdFromAdmin(Long eventId, EventUpdateAdminRequest request) {
+    public EventFullDto updateEventById(Long eventId, EventUpdateAdminRequest request) {
         Event foundEvent = getEventByIdIfExist(eventId);
 
         if (!Objects.equals(EventState.PENDING, foundEvent.getState())) {
-            throw new EventConflictException("State of event is not 'PENDING'");
+            throw new EventConflictException("Event state must be 'PENDING'");
         }
 
         if (Objects.nonNull(request.getAnnotation()) && StringUtils.hasLength(request.getAnnotation())) {
@@ -79,14 +79,14 @@ public class EventAdminService {
                 foundEvent.setAnnotation(request.getAnnotation());
             }
         }
-        if (Objects.nonNull(request.getTitle()) && !request.getTitle().isBlank()) {
+        if (Objects.nonNull(request.getTitle()) && StringUtils.hasLength(request.getTitle())) {
             foundEvent.setTitle(request.getTitle());
         }
         if (Objects.nonNull(request.getCategory())) {
             final Category category = categoryService.getCategoryByIdIfExist(request.getCategory());
             foundEvent.setCategory(category);
         }
-        if (Objects.nonNull(request.getDescription()) && !request.getDescription().isEmpty()) {
+        if (Objects.nonNull(request.getDescription()) && StringUtils.hasLength(request.getDescription())) {
             foundEvent.setDescription(request.getDescription());
         }
         if (Objects.nonNull(request.getEventDate())) {
@@ -127,7 +127,7 @@ public class EventAdminService {
     private void checkEndTimeAfterStartTime(LocalDateTime startDate) {
         LocalDateTime twoHoursLater = LocalDateTime.now().plusHours(HOURS_BEFORE_START_EVENT);
         if (startDate.isBefore(twoHoursLater)) {
-            throw new IncorrectRequestException("The event will start in less than 2 hours. The start date of the event cannot be changed.");
+            throw new IncorrectRequestException("The event will start in less than 1 hours. The start date of the event cannot be changed.");
         }
     }
 

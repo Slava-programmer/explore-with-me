@@ -33,6 +33,7 @@ public class EventUserService {
     private final EventRepository eventRepository;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final RequestService requestService;
 
     @Transactional
     public EventFullDto createEvent(EventNewDto request, Long userId) {
@@ -61,7 +62,7 @@ public class EventUserService {
         return EventMapper.toEventFullDto(event);
     }
 
-    public EventFullDto updateEventByUserIdAndEventIdFromUser(Long userId, Long eventId, EventUpdateUserRequest request) {
+    public EventFullDto updateEventByUserIdAndEventId(Long userId, Long eventId, EventUpdateUserRequest request) {
         userService.checkExistUserById(userId);
 
         Event foundEvent = getEventByIdAndInitiatorIdIfExist(eventId, userId);
@@ -120,9 +121,10 @@ public class EventUserService {
         }
     }
 
-    private Event getEventByIdAndInitiatorIdIfExist(Long eventId, Long userId) {
+    public Event getEventByIdAndInitiatorIdIfExist(Long eventId, Long userId) {
         return eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() ->
                 new NoFoundObjectException(String.format("Event with id='%s' and initiator with id='%s' not found",
                         eventId, userId)));
     }
+
 }
