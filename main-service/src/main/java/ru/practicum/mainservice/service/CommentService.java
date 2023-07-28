@@ -50,7 +50,7 @@ public class CommentService {
 
 
         Optional<Comment> foundComment = commentRepository.findByEventIdAndAuthorId(eventId, userId);
-        if(foundComment.isPresent()) {
+        if (foundComment.isPresent()) {
             throw new AccessException(String.format("Пользователь с id='%s' уже оставлял комментарий к событию " +
                     "с id='%s'", userId, eventId));
         }
