@@ -19,9 +19,9 @@ public class CategoryService {
 
     @Transactional
     public CategoryDto createCategory(CategoryDto categoryDto) {
-        Category savedCategory = categoryRepository.save(CategoryMapper.toCategory(categoryDto));
+        Category savedCategory = categoryRepository.save(CategoryMapper.fromDto(categoryDto));
 
-        return CategoryMapper.toCategoryDto(savedCategory);
+        return CategoryMapper.toDto(savedCategory);
     }
 
     @Transactional
@@ -30,7 +30,7 @@ public class CategoryService {
 
         category.setName(request.getName());
 
-        return CategoryMapper.toCategoryDto(categoryRepository.save(category));
+        return CategoryMapper.toDto(categoryRepository.save(category));
     }
 
     @Transactional
@@ -42,13 +42,13 @@ public class CategoryService {
     public List<CategoryDto> getCategories(Integer from, Integer size) {
         List<Category> categories = categoryRepository.findAll(PageRequest.of(from, size)).getContent();
 
-        return CategoryMapper.toCategoryDtosList(categories);
+        return CategoryMapper.toDtos(categories);
     }
 
     public CategoryDto getCategoryById(Long categoryId) {
         Category category = getCategoryByIdIfExist(categoryId);
 
-        return CategoryMapper.toCategoryDto(category);
+        return CategoryMapper.toDto(category);
     }
 
     public Category getCategoryByIdIfExist(Long categoryId) {

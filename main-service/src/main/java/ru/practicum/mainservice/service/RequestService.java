@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,7 +78,7 @@ public class RequestService {
         userService.checkExistUserById(userId);
 
         List<Request> requests = requestRepository.findAllByRequesterId(userId);
-        return RequestMapper.toDtoList(requests);
+        return RequestMapper.toDtos(requests);
     }
 
     @Transactional
@@ -104,7 +105,7 @@ public class RequestService {
         userService.checkExistUserById(userId);
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() -> new NoFoundObjectException(String.format(
-                        "Запрос с id='%s' и инициатором с id='%s' не найден", eventId, userId)));
+                        "Событие с id='%s' и инициатором с id='%s' не найден", eventId, userId)));
 
 
         if (event.getConfirmedRequests() >= event.getParticipantLimit()) {
@@ -155,6 +156,10 @@ public class RequestService {
         }
 
         List<Request> requests = requestRepository.findAllByEventId(eventId);
-        return RequestMapper.toDtoList(requests);
+        return RequestMapper.toDtos(requests);
+    }
+
+    public Optional<Request> getRequestByUserIdAndEventId(Long userId, Long eventId) {
+        return requestRepository.findByEventIdAndRequesterId(eventId, userId);
     }
 }

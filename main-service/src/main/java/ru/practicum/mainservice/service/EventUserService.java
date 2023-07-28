@@ -41,10 +41,10 @@ public class EventUserService {
         User user = userService.getUserByIdIfExist(userId);
         Category category = categoryService.getCategoryByIdIfExist(request.getCategory());
 
-        Event event = EventMapper.toEvent(request, category, user);
+        Event event = EventMapper.fromDto(request, category, user);
         Event savedEvent = eventRepository.save(event);
 
-        return EventMapper.toEventFullDto(savedEvent);
+        return EventMapper.toFullDto(savedEvent);
     }
 
     public List<EventShortDto> getEventsByUserId(Long userId, Integer from, Integer size) {
@@ -52,13 +52,13 @@ public class EventUserService {
         userService.checkExistUserById(userId);
 
         List<Event> events = eventRepository.findAllByInitiatorId(userId, pageable);
-        return EventMapper.toEventShortDtoList(events);
+        return EventMapper.toShortDtos(events);
     }
 
     public EventFullDto getEventByUserIdAndEventId(Long userId, Long eventId) {
         userService.checkExistUserById(userId);
         Event event = getEventByIdAndInitiatorIdIfExist(eventId, userId);
-        return EventMapper.toEventFullDto(event);
+        return EventMapper.toFullDto(event);
     }
 
     public EventFullDto updateEventByUserIdAndEventId(Long userId, Long eventId, EventUpdateUserRequest request) {
@@ -94,7 +94,7 @@ public class EventUserService {
             foundEvent.setDescription(request.getDescription());
         }
         if (Objects.nonNull(request.getLocation())) {
-            foundEvent.setLocation(LocationMapper.toLocation(request.getLocation()));
+            foundEvent.setLocation(LocationMapper.fromDto(request.getLocation()));
         }
         if (Objects.nonNull(request.getParticipantLimit())) {
             foundEvent.setParticipantLimit(request.getParticipantLimit());
@@ -114,7 +114,13 @@ public class EventUserService {
         }
 
         Event updatedEvent = eventRepository.save(foundEvent);
-        return EventMapper.toEventFullDto(updatedEvent);
+        return EventMapper.toFullDto(updatedEvent);
+    }
+
+    public Event getEventByIdAndInitiatorIdIfExist(Long eventId, Long userId) {
+        return eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() ->
+                new NoFoundObjectException(String.format("Событие с id='%s' и инициатором с id='%s' не найдено",
+                        eventId, userId)));
     }
 
     private void checkTimeBeforeEventStart(LocalDateTime startDate) {
@@ -123,12 +129,6 @@ public class EventUserService {
             throw new IncorrectRequestException("Событие начинается менее чем через " + HOURS_BEFORE_START_EVENT +
                     " часов");
         }
-    }
-
-    public Event getEventByIdAndInitiatorIdIfExist(Long eventId, Long userId) {
-        return eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() ->
-                new NoFoundObjectException(String.format("Событие с id='%s' и инициатором с id='%s' не найдено",
-                        eventId, userId)));
     }
 
 }

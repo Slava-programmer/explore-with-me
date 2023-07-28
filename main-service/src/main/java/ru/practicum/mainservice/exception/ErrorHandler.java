@@ -34,6 +34,8 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                 .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         response.put("errors", errors);
 
+        log.error("Error MethodArgumentNotValidException {}", errors);
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(response);
@@ -110,7 +112,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Object> handle(DataIntegrityViolationException e) {
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         ErrorResponse response = ErrorResponse.builder()
                 .status(HttpStatus.CONFLICT.name())
                 .reason("Validation exception")
@@ -119,5 +121,18 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(AccessException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessException(final AccessException e) {
+        log.error("Error AccessException {}", e.getMessage());
+
+        return ErrorResponse.builder()
+                .status(HttpStatus.FORBIDDEN.name())
+                .reason("The action is not available")
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
     }
 }
