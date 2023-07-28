@@ -98,7 +98,7 @@
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>3.1.2</version>
                     <configuration>
-                        <configLocation>checkstyle.xml</configLocation>
+                        <configLocation>../../../Downloads/java-explore-with-me(2)/java-explore-with-me/checkstyle.xml</configLocation>
                         <failOnViolation>true</failOnViolation>
                         <logViolationsToConsole>true</logViolationsToConsole>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
