@@ -20,20 +20,20 @@ public class UserService {
 
     @Transactional
     public UserDto createUser(UserDto request) {
-        User user = UserMapper.toUser(request);
+        User user = UserMapper.fromDto(request);
         User saveUser = userRepository.save(user);
 
-        return UserMapper.toUserDto(saveUser);
+        return UserMapper.toDto(saveUser);
     }
 
     public List<UserDto> getUsersByIds(List<Long> ids, Integer from, Integer size) {
         if (Objects.isNull(ids) || ids.isEmpty()) {
             List<User> users = userRepository.findAll(PageRequest.of(from, size)).getContent();
-            return UserMapper.toUserDtosList(users);
+            return UserMapper.toDtos(users);
         }
 
         List<User> users = userRepository.findAllByIdIn(ids, PageRequest.of(from, size)).getContent();
-        return UserMapper.toUserDtosList(users);
+        return UserMapper.toDtos(users);
     }
 
     @Transactional
