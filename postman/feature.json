@@ -1696,6 +1696,71 @@
 			"key": "commentId",
 			"value": "1",
 			"type": "string"
+		},
+		{
+			"key": "name",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "usersCount",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "catId",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "request_body",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "mail",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "response",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "uid",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "catname",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "eid",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "compid",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "toCheck",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "newDataToSet",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "reqid",
+			"value": "",
+			"type": "default"
 		}
 	]
 }
