@@ -94,7 +94,7 @@ __Краткое описание:__ Проект с микросервисно�
 
 ## Схема БД сервиса статистики:
 
-![ewm-statistics](diagramStats.png)
+![ewm-stats-server](diagramStats.png)
 
 ## Варианты запуска приложения
 
@@ -104,4 +104,4 @@ __Краткое описание:__ Проект с микросервисно�
 
 «main»: main-service\src\main\java\ru\practicum\mainservice\MainServiceApp -> "run";
 
-«stats»: stats\stats-server\src\main\java\ru\practicum\statsserver\StatsServerApplication -> "run"
+«stats»: stats-service\stats-server\src\main\java\ru\practicum\statsserver\StatsServerApplication -> "run"

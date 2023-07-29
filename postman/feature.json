@@ -12,7 +12,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be is 400\", function () {\r",
+							"pm.test(\"Response status must be 400\", function () {\r",
 							"    pm.response.to.be.badRequest;    \r",
 							"});\r",
 							"\r",
@@ -87,12 +87,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 404 and containts body in json format\", function () {\r",
+							"pm.test(\"Response status must be 404\", function () {\r",
 							"    pm.response.to.be.notFound;    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
-							"});\r",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -154,12 +156,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 404 and containts body in json format, function () {\r",
+							"pm.test(\"Response status must be 404\", function () {\r",
 							"    pm.response.to.be.notFound;    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
-							"});\r",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -221,12 +225,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 409 and containts body in json format\", function () {\r",
-							"    pm.response.to.have.status(409);  \r",
+							"pm.test(\"Response status must be 409\", function () {\r",
+							"    pm.response.to.have.status(409);   \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
-							"});\r",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -297,12 +303,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 404 and containts body in json format\", function () {\r",
+							"pm.test(\"Response status must be 404\", function () {\r",
 							"    pm.response.to.be.notFound;    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
-							"});\r",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -338,15 +346,18 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 201 and containts body in json format\", function () {\r",
-							"    pm.response.to.have.status(201);    \r",
+							"pm.test(\"Response status must be 201\", function () {\r",
+							"    pm.response.to.have.status(201);   \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
 							"\r",
 							"const response = pm.response.json();\r",
 							"\r",
-							"pm.test(\"Bodymust consist fiekds: id, text, author, createdDateTime, event\", function () {\r",
+							"pm.test(\"Body must consist fields: id, text, author, createdOn, event\", function () {\r",
 							"    pm.expect(response).to.have.property('id');\r",
 							"    pm.expect(response).to.have.property('text');\r",
 							"    pm.expect(response).to.have.property('author');\r",
@@ -354,7 +365,7 @@
 							"    pm.expect(response).to.have.property('event');\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Comment must was created\", function () {\r",
+							"pm.test(\"The comment must be created and contained in the body of the response in field 'text'\", function () {\r",
 							"    pm.expect(response.text).to.equal(\"Test comment\");\r",
 							"});"
 						],
@@ -418,12 +429,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 403 and containts body in json format\", function () {\r",
-							"    pm.response.to.have.status(403);    \r",
+							"pm.test(\"Response status must be 403\", function () {\r",
+							"    pm.response.to.have.status(403);   \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
-							"});\r",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -494,12 +507,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 200 and containts body in json format\", function () {\r",
-							"    pm.response.to.be.ok;    \r",
+							"pm.test(\"Response status must be 200\", function () {\r",
+							"    pm.response.to.have.status(200);   \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
-							"\r",
 							"const response = pm.response.json();\r",
 							"\r",
 							"pm.test(\"Event must consist field 'comments'\", function() {\r",
@@ -542,8 +557,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 201 and containts body in json format\", function () {\r",
-							"    pm.response.to.have.status(201);    \r",
+							"pm.test(\"Response status must be 201\", function () {\r",
+							"    pm.response.to.have.status(201);   \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
@@ -558,7 +576,7 @@
 							"    pm.expect(response).to.have.property('event');\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Comment must was created\", function () {\r",
+							"pm.test(\"The comment must be created and contained in the body of the response in field 'text'\", function () {\r",
 							"    pm.expect(response.text).to.equal(\"Test comment\");\r",
 							"});"
 						],
@@ -688,12 +706,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 403 and containts body in json format\", function () {\r",
-							"    pm.response.to.have.status(403); \r",
+							"pm.test(\"Response status must be 403\", function () {\r",
+							"    pm.response.to.have.status(403);   \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
-							"});\r",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -761,8 +781,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 200 and containts body in json format\", function () {\r",
-							"    pm.response.to.be.ok;    \r",
+							"pm.test(\"Response status must be 200\", function () {\r",
+							"    pm.response.to.have.status(200);   \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
@@ -777,9 +800,10 @@
 							"    pm.expect(response).to.have.property('event');\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Comment must was updated\", function () {\r",
+							"pm.test(\"The comment must be updated and contained in the body of the response in field 'text'\", function () {\r",
 							"    pm.expect(response.text).to.equal(\"Updated comment text by author\");\r",
-							"});"
+							"});\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -838,10 +862,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 403 and containts body in json format\", function () {\r",
-							"    pm.response.to.have.status(403); \r",
+							"pm.test(\"Response status must be 403\", function () {\r",
+							"    pm.response.to.have.status(403);   \r",
 							"});\r",
-							""
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -882,7 +910,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 204 and containts body in json format\", function () {\r",
+							"pm.test(\"Response status must be 204\", function () {\r",
 							"    pm.response.to.have.status(204);   \r",
 							"});\r",
 							""
@@ -936,10 +964,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 404 and containts body in json format\", function () {\r",
-							"    pm.response.to.be.notFound;    \r",
+							"pm.test(\"Response status must be 404\", function () {\r",
+							"    pm.response.to.have.status(404);   \r",
 							"});\r",
-							""
+							"\r",
+							"pm.test(\"Response must contains body in json format\", function () {   \r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -990,7 +1022,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Response status must be 204 and containts body in json format\", function () {\r",
+							"pm.test(\"Response status must be 204t\", function () {\r",
 							"    pm.response.to.have.status(204);   \r",
 							"});\r",
 							""
